@@ -1,0 +1,20 @@
+
+##存为脚本iptables.sh，执行sh iptables.sh自动配置防火墙。检测bash -x ./iptables.sh
+##解释：
+#1、设置INPUT,FORWARD,OUTPUT链默认target为DROP，也就是外部与服务器不能通信。
+#2、设置当连接状态为RELATED和ESTABLISHED时，允许数据进入服务器。
+#3、设置外部客户端连接服务器端口80,22,21,443（https）。
+#另外要开启873端口（rsync服务器之间数据同步）
+#/sbin/iptables -A INPUT -p tcp -m tcp --dport 873 -j ACCEPT
+#4、允许内部数据循回。
+#5、允许外部ping服务器 。
+#6、设置状态为RELATED和ESTABLISHED的数据可以从服务器发送到外部。
+#7、允许服务器使用外部dns解析域名。
+#8、设置服务器连接外部服务器端口80。
+#9、允许服务器发送邮件。
+#10、允许从服务器ping外部
+#11、允许ftp访问 
+如果不想每次都加载模块的话请在  /etc/sysconfig/iptables-config
+IPTABLES_MODULES="ip_nat_ftp"
+IPTABLES_MODULES="ip_conntrack"
+IPTABLES_MODULES="ip_conntrack_ftp"

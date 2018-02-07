@@ -1,0 +1,43 @@
+1、查看本机关于IPTABLES的设置情况
+[root@tp ~]# iptables -L -n 
+查看端口使用情况
+netstat -ntlp
+如果你在安装linux时没有选择启动防火墙,是这样的
+[root@tp ~]# iptables -L -n
+Chain INPUT (policy ACCEPT)
+target prot opt source destination
+Chain FORWARD (policy ACCEPT)
+target prot opt source destination
+Chain OUTPUT (policy ACCEPT)
+target prot opt source destination 
+
+2、清除原有规则. 
+[root@tp ~]# iptables -F 清除预设表filter中的所有规则链的规则
+[root@tp ~]# iptables -X 清除预设表filter中使用者自定链中的规则 
+保存.
+[root@tp ~]# /etc/rc.d/init.d/iptables save 
+重启
+添加参数 restart 重启 stop 关闭 start 开启 status 状态
+[root@tp ~]# service iptables restart 
+
+开启 80 22 21端口 禁用其他端口
+添加规则有两个参数：-A和-I。其中-A是添加到规则的末尾；-I可以插入到指定位置，没有指定位置的话默认插入到规则的首部。
+iptables -I INPUT -p tcp --dport 80  -j ACCEPT
+iptables -I INPUT -p tcp --dport 22  -j ACCEPT
+iptables -I INPUT -p tcp --dport 21  -j ACCEPT
+iptables -A INPUT   -j DROP 
+
+
+再插入一条规则到第三行，将行数直接写到规则链的后面：
+
+[root@test ~]# iptables -I INPUT 3 -s 192.168.1.3 -j DROP
+
+3、删除
+删除用-D参数
+
+删除之前添加的规则（iptables -A INPUT -s 192.168.1.5 -j DROP）：
+
+[root@test ~]# iptables -D INPUT -s 192.168.1.5 -j DROP
+
+dport：目的端口 
+sport：来源端口
