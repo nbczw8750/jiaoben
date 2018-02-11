@@ -5,9 +5,6 @@ database[0]="activate"
 database[1]="lh_erp"
 database[2]="sms"
 
-user="root"
-passwd="YSmysql1509"
-
 if !(test -d $BackupPath)
 then
   mkdir $BackupPath
